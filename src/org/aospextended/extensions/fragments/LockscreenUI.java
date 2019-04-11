@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.ContentResolver;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
+import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.os.RemoteException;
@@ -68,6 +69,7 @@ public class LockscreenUI extends SettingsPreferenceFragment implements OnPrefer
     private static final String FP_UNLOCK_KEYSTORE = "fp_unlock_keystore";
     private static final String ENCRYPTED_DEV = "ro.crypto.state";
     private static final String WEATHER_LS_CAT = "weather_lockscreen_key";
+	private static final String KEY_FINGERPRINT_SETTINGS = "fingerprint_settings";
 
     private SwitchPreference mFaceUnlock;
     private SystemSettingSwitchPreference mFingerprintVib;
@@ -104,7 +106,15 @@ public class LockscreenUI extends SettingsPreferenceFragment implements OnPrefer
         mFingerprintManager = (FingerprintManager) getActivity().getSystemService(Context.FINGERPRINT_SERVICE);
         mFingerprintVib = (SystemSettingSwitchPreference) findPreference(FINGERPRINT_VIB);
         mFpKeystore = (SystemSettingSwitchPreference) findPreference(FP_UNLOCK_KEYSTORE);
-
+		
+		mFingerprintManager = (FingerprintManager) getActivity().getSystemService(Context.FINGERPRINT_SERVICE);
+        if (mFingerprintManager == null || !mFingerprintManager.isHardwareDetected()){
+            Preference pref = getPreferenceScreen().findPreference(KEY_FINGERPRINT_SETTINGS);
+            if (pref != null) {
+                getPreferenceScreen().removePreference(pref);
+            }
+        }
+		
         if (mFingerprintManager != null && mFingerprintManager.isHardwareDetected()){
         mFingerprintVib.setChecked((Settings.System.getInt(getContentResolver(),
                 Settings.System.FINGERPRINT_SUCCESS_VIB, 1) == 1));
