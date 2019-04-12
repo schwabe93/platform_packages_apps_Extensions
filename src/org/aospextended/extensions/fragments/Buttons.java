@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.ContentResolver;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
+import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.os.RemoteException;
@@ -70,6 +71,8 @@ public class Buttons extends ActionFragment
     private static final String KEY_BUTTON_MANUAL_BRIGHTNESS_NEW = "button_manual_brightness_new";
     private static final String KEY_BUTTON_TIMEOUT = "button_timeout";
     private static final String KEY_BUTON_BACKLIGHT_OPTIONS = "button_backlight_options_category";
+	private static final String KEY_FINGERPRINT_SETTINGS = "fingerprint_settings";
+	
 
     private ListPreference mVolumeKeyCursorControl;
     private ListPreference mTorchLongPressPowerTimeout;
@@ -77,6 +80,7 @@ public class Buttons extends ActionFragment
     private CustomSeekBarPreference mButtonTimoutBar;
     private CustomSeekBarPreference mManualButtonBrightness;
     private PreferenceCategory mButtonBackLightCategory;
+	private FingerprintManager mFingerprintManager;
 
     // category keys
     private static final String CATEGORY_HWKEY = "hardware_keys";
@@ -113,6 +117,14 @@ public class Buttons extends ActionFragment
                     Settings.System.VOLUME_KEY_CURSOR_CONTROL, 0);
             mVolumeKeyCursorControl.setValue(Integer.toString(volumeRockerCursorControl));
            mVolumeKeyCursorControl.setSummary(mVolumeKeyCursorControl.getEntry());
+        }
+		
+		mFingerprintManager = (FingerprintManager) getActivity().getSystemService(Context.FINGERPRINT_SERVICE);
+        if (mFingerprintManager == null || !mFingerprintManager.isHardwareDetected()){
+            Preference pref = getPreferenceScreen().findPreference(KEY_FINGERPRINT_SETTINGS);
+            if (pref != null) {
+                getPreferenceScreen().removePreference(pref);
+            }
         }
 
         mTorchLongPressPowerTimeout =

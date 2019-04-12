@@ -721,5 +721,9 @@
 
     <!-- IconPack Preference -->
     <string name="default_iconpack_title">Default</string>
+	
+	<!-- Fingerprint -->
+    <string name="fingerprint_settings_title">Fingerprint</string>
+    <string name="fingerprint_category_custom_icon">Custom icon</string>
 
 </resources>

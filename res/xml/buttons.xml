@@ -25,6 +25,12 @@
              android:title="@string/power_menu_title"
              android:summary="@string/power_menu_title_summary"
 	     android:fragment="org.aospextended.extensions.fragments.PowerMenuSettings" />
+		 
+	<Preference
+        android:key="fingerprint_settings"
+        android:title="@string/fingerprint_settings_title"
+        android:icon="@drawable/ic_settings_fingerprint"
+        android:fragment="org.omnirom.omnigears.interfacesettings.FingerprintSettings" />
 
     <org.aospextended.extensions.preference.SystemSettingSwitchPreference
         android:key="torch_long_press_power_gesture"
